@@ -68,10 +68,30 @@ priceInfoDiv.innerHTML = `
 `;
 priceInfoContainer.appendChild(priceInfoDiv);
 
+// INJECT input inside the image-bottom-box (force placement under the image)
+const imageBox = document.getElementById('image-bottom-box');
+if (imageBox) {
+  imageBox.innerHTML = `
+    <div style="display:flex;gap:8px;align-items:center;width:100%;justify-content:center;">
+      <input id="input-precio-game" type="text" placeholder="Precio Game (ej. 19.99)">
+      <button id="btn-guardar-precio-game">Guardar</button>
+    </div>
+  `;
+}
+
+// status element (under the left column)
+let saveStatus = document.getElementById('save-status');
+if (!saveStatus) {
+  saveStatus = document.createElement('div');
+  saveStatus.id = 'save-status';
+  saveStatus.style = 'font-size:12px;margin-top:8px;color:#a0d4ff;display:none;text-align:center;';
+  const detalleLeft = document.querySelector('.detalle-left');
+  if (detalleLeft) detalleLeft.appendChild(saveStatus);
+}
+
 // Fill the input if value exists
-const inputEl = document.getElementById('input-precio-game');
-const btnGuardar = document.getElementById('btn-guardar-precio-game');
-const saveStatus = document.getElementById('save-status');
+const inputEl = document.querySelector('#image-bottom-box #input-precio-game');
+const btnGuardar = document.querySelector('#image-bottom-box #btn-guardar-precio-game');
 if (inputEl && typeof gamePriceStored === 'number') {
     inputEl.value = String(gamePriceStored);
 }
@@ -85,7 +105,7 @@ function nowFormatted() {
 
 if (btnGuardar) {
   btnGuardar.addEventListener('click', () => {
-    const raw = inputEl.value.trim().replace(',', '.');
+    const raw = (inputEl.value || '').trim().replace(',', '.');
     const priceNum = parseFloat(raw);
     if (isNaN(priceNum)) {
       saveStatus.style.display = 'block';
@@ -117,11 +137,13 @@ if (btnGuardar) {
     nuevosPrecios.push(priceNum);
     const nuevoMax = Math.max(...nuevosPrecios);
     const elemMax = document.getElementById('precio-mas-alto');
-    elemMax.textContent = `${nuevoMax}€`;
-    if (priceNum === nuevoMax) {
-      elemMax.className = 'price-value highest-game';
-    } else {
-      elemMax.className = 'price-value highest-other';
+    if (elemMax) {
+      elemMax.textContent = `${nuevoMax}€`;
+      if (priceNum === nuevoMax) {
+        elemMax.className = 'price-value highest-game';
+      } else {
+        elemMax.className = 'price-value highest-other';
+      }
     }
 
     // Update save status
