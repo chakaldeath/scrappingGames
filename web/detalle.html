@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1">
+
+<title>Detalle</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+
+</head>
+
+<body>
+
+<header>
+
+<a href="index.html">← Volver</a>
+
+<h1 id="titulo"></h1>
+
+</header>
+
+<main>
+
+<div id="detalle">
+
+    <!-- LEFT COLUMN: Barcode, Image and Price -->
+    <div class="detalle-left">
+        <div class="barcode-container">
+            <svg id="barcode"></svg>
+        </div>
+        <img id="imagen" alt="Producto">
+        <h2 id="precio"></h2>
+    </div>
+
+    <!-- RIGHT COLUMN: Graph and Table -->
+    <div class="detalle-right">
+        <div class="grafico-container">
+            <svg id="grafico" width="100%" height="400"></svg>
+        </div>
+        <div id="tabla-historial"></div>
+    </div>
+
+</div>
+
+</main>
+
+<script src="juegos.js"></script>
+<script src="historial.js"></script>
+<script src="detalle.js"></script>
+
+</body>
+
+</html>
