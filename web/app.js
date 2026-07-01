@@ -92,8 +92,13 @@ for (const juego of juegos) {
     const highestHtml = best.price !== -Infinity ? `${best.price} €` : 'N/D';
     const highestClass = best.source === 'game' ? 'precio-game' : 'precio-other';
 
+    // badge for games that have a saved precioGame
+    const hasGamePrice = typeof precioGameMap[juego.id] === 'number';
+    const badgeHtml = hasGamePrice ? `<div class="game-badge" title="Precio Game disponible">✔</div>` : '';
+
     card.innerHTML = `
 
+		${badgeHtml}
 		<img
 			src="${juego.imagen}"
 			alt="${juego.nombre}"
