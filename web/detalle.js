@@ -232,8 +232,14 @@ const tabla = document.getElementById("tabla-historial");
 function renderHistorialTable() {
   // Re-fetch datos in case localStorage changed
   const currentHist = JSON.parse(localStorage.getItem('historial')) || historial;
-  const entry = currentHist.find(h => h.id == id) || { historial: [] };
-  const rows = entry.historial;
+  let entry = currentHist.find(h => h.id == id) || { historial: [] };
+  let rows = entry.historial;
+  
+  // SANITIZAR: asegurar que rows siempre es array
+  // En algunos casos PowerShell puede serializar mal un objeto individual
+  if (!Array.isArray(rows)) {
+    rows = rows ? [rows] : [];
+  }
 
   let htmlTabla = `
     <table>
