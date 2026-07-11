@@ -204,7 +204,8 @@ foreach($id in $ids){
     }
     else{
 
-        $lista=@($historial[$hist].historial)
+        # IMPORTANTE: siempre crear como array
+        $lista = @($historial[$hist].historial)
 
         $ultimo=$lista[-1]
 
@@ -220,9 +221,10 @@ foreach($id in $ids){
 
             }
 
-            $historial[$hist].historial=$lista
-
         }
+
+        # CRÍTICO: convertir a array explícitamente antes de asignar
+        $historial[$hist].historial = @($lista)
 
     }
 
@@ -260,8 +262,9 @@ $js | Out-File $juegosJs -Encoding utf8
 
 $historial = $historial | Sort-Object id
 
-# Cambiamos la tubería por -InputObject para proteger la estructura del array
-ConvertTo-Json -InputObject $historial -Depth 20 | Out-File $historialJson -Encoding utf8
+# CRÍTICO: usar @() para forzar serialización como array
+$historialJson_content = @($historial) | ConvertTo-Json -Depth 20
+$historialJson_content | Out-File $historialJson -Encoding utf8
 
 
 # ============================================
@@ -273,7 +276,7 @@ $js=@"
 // Generado automáticamente
 // ============================================
 
-const historial = $($historial | ConvertTo-Json -Depth 20);
+const historial = $(@($historial) | ConvertTo-Json -Depth 20);
 "@
 
 $js | Out-File $historialJs -Encoding utf8
